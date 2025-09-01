@@ -22,11 +22,13 @@ from . import crud
 
 app = FastAPI(title="Access Control App")
 
-origins = os.getenv("CORS_ORIGINS", "*").split(",")
+origins_env = os.getenv("CORS_ORIGINS", "*")
+origins = [o.strip() for o in origins_env.split(",") if o.strip()]
+allow_any_origin = len(origins) == 1 and origins[0] == "*"
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in origins],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_any_origin else origins,
+    allow_credentials=False if allow_any_origin else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

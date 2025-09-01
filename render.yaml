@@ -21,17 +21,16 @@ services:
         fromDatabase:
           name: gs-postgres
           property: connectionString
+      # In production we default to '*' and disable credentials
+      # (backend handles this toggle safely)
+      - key: CORS_ORIGINS
+        value: "*"
       - key: SECRET_KEY
         generateValue: true
       - key: ADMIN_EMAIL
         value: admin@example.com
       - key: ADMIN_PASSWORD
         generateValue: true
-      # Allow the deployed frontend origin
-      - key: CORS_ORIGINS
-        fromService:
-          name: access-control-frontend
-          property: url
 
   # Frontend (Vite built, served via Node)
   - type: web
@@ -43,8 +42,11 @@ services:
     buildCommand: npm ci && npm run build
     startCommand: npx serve -s dist -l $PORT
     envVars:
-      # Build-time API base URL used by Vite
-      - key: VITE_API_URL
+      # Build-time API host used by Vite; code constructs scheme://host
+      - key: VITE_API_HOST
         fromService:
           name: access-control-backend
-          property: url
+          type: web
+          property: host
+      - key: VITE_API_SCHEME
+        value: https

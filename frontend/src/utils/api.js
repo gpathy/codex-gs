@@ -1,4 +1,7 @@
-export const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const scheme = import.meta.env.VITE_API_SCHEME || 'https'
+const host = import.meta.env.VITE_API_HOST
+export const apiBase =
+  import.meta.env.VITE_API_URL || (host ? `${scheme}://${host}` : 'http://localhost:8000')
 
 export async function apiFetch(path, { method = 'GET', body, token } = {}){
   const res = await fetch(apiBase + path, {
@@ -17,4 +20,3 @@ export async function apiFetch(path, { method = 'GET', body, token } = {}){
   const ct = res.headers.get('content-type') || ''
   return ct.includes('application/json') ? res.json() : res.text()
 }
-
