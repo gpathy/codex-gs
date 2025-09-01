@@ -20,7 +20,7 @@ services:
       - key: DATABASE_URL
         fromDatabase:
           name: gs-postgres
-          property: postgresql://postgresuser:YdRQMhzvCgSdE2oGeKVZwYLxqj7CdiTk@dpg-d2qq9cbe5dus73ce5e90-a.oregon-postgres.render.com/appdb_iwav
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: ADMIN_EMAIL
@@ -33,12 +33,15 @@ services:
           name: access-control-frontend
           property: url
 
-  # Frontend (Vite -> Static Site)
-  - type: static
+  # Frontend (Vite built, served via Node)
+  - type: web
     name: access-control-frontend
+    env: node
+    plan: free
     rootDir: frontend
+    autoDeploy: true
     buildCommand: npm ci && npm run build
-    publishPath: dist
+    startCommand: npx serve -s dist -l $PORT
     envVars:
       # Build-time API base URL used by Vite
       - key: VITE_API_URL
