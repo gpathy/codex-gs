@@ -34,9 +34,8 @@ services:
           property: url
 
   # Frontend (Vite -> Static Site)
-  - type: static_site
+  - type: static
     name: access-control-frontend
-    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     publishPath: dist
@@ -46,4 +45,3 @@ services:
         fromService:
           name: access-control-backend
           property: url
-
