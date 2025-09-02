@@ -41,8 +41,13 @@ services:
     autoDeploy: true
     dockerfilePath: Dockerfile
     envVars:
-      - key: API_HOSTPORT
+      - key: API_HOST
         fromService:
           name: access-control-backend
           type: web
-          property: hostport
+          property: host
+      - key: API_PORT
+        fromService:
+          name: access-control-backend
+          type: web
+          property: port
