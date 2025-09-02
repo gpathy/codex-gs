@@ -1,7 +1,7 @@
 const scheme = import.meta.env.VITE_API_SCHEME || 'https'
 const host = import.meta.env.VITE_API_HOST
 export const apiBase =
-  import.meta.env.VITE_API_URL || (host ? `${scheme}://${host}` : 'http://localhost:8000')
+  import.meta.env.VITE_API_URL || (host ? `${scheme}://${host}` : '/api')
 
 export async function apiFetch(path, { method = 'GET', body, token } = {}){
   const res = await fetch(apiBase + path, {

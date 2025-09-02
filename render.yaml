@@ -33,21 +33,22 @@ services:
       - key: ADMIN_PASSWORD
         generateValue: true
 
-  # Frontend (Vite built, served via Node)
+  # Frontend (Vite -> Nginx with /api proxy to backend)
   - type: web
     name: access-control-frontend
-    env: node
+    env: docker
     plan: free
     rootDir: frontend
     autoDeploy: true
-    buildCommand: npm install --no-audit --no-fund && npm run build
-    startCommand: npx serve -s dist -l $PORT
+    dockerfilePath: frontend/Dockerfile
     envVars:
-      # Build-time API host used by Vite; code constructs scheme://host
-      - key: VITE_API_HOST
+      - key: API_HOST
         fromService:
           name: access-control-backend
           type: web
           property: host
-      - key: VITE_API_SCHEME
-        value: https
+      - key: API_PORT
+        fromService:
+          name: access-control-backend
+          type: web
+          property: port
