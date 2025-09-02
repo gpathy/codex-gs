@@ -11,7 +11,6 @@ services:
   - type: web
     name: access-control-backend
     env: python
-    pythonVersion: 3.11.9
     plan: free
     autoDeploy: true
     buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
