@@ -39,7 +39,7 @@ services:
     plan: free
     rootDir: frontend
     autoDeploy: true
-    dockerfilePath: frontend/Dockerfile
+    dockerfilePath: Dockerfile
     envVars:
       - key: API_HOST
         fromService:
