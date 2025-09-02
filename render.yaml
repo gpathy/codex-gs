@@ -46,8 +46,3 @@ services:
           name: access-control-backend
           type: web
           property: host
-      - key: API_PORT
-        fromService:
-          name: access-control-backend
-          type: web
-          property: port
